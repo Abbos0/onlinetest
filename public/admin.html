@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Online Test</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Admin Panel</h1>
+            <a href="/" class="btn-secondary">Chiqish</a>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('monitoring')">Monitoring</button>
+            <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
+            <button class="tab-btn" onclick="showTab('questions')">Savollar</button>
+        </div>
+
+        <div id="monitoring-tab" class="tab-content active">
+            <div class="admin-layout">
+                <div class="users-list">
+                    <h3>Foydalanuvchilar</h3>
+                    <div id="usersList"></div>
+                </div>
+                
+                <div class="monitor-section">
+                    <div class="video-box">
+                        <h3>Live video</h3>
+                        <video id="remoteVideo" autoplay playsinline></video>
+                        <div id="selectedUserInfo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="results-tab" class="tab-content">
+            <div class="results-section">
+                <h3>Real-time Test Natijalari</h3>
+                <div id="resultsList" class="results-list">
+                    <p class="no-results">Hali natijalar yo'q...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="questions-tab" class="tab-content">
+            <div class="questions-management">
+                <div class="upload-section">
+                    <h3>Yangi savollar qo'shish</h3>
+                    <p>Word faylni yuklang (.docx, .doc)</p>
+                    <p class="format-hint">Format: 1.Savol? ##To'g'riJavob ++Noto'g'riJavob...</p>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" id="wordFile" name="file" accept=".doc,.docx" required>
+                        <button type="submit" class="btn-primary">Yuklash</button>
+                    </form>
+                    <div id="uploadResult"></div>
+                </div>
+                
+                <div class="questions-list">
+                    <h3>Mavjud savollar</h3>
+                    <button onclick="loadQuestions()" class="btn-secondary">Yangilash</button>
+                    <div id="questionsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

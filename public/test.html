@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test jarayoni - Online Test</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Test jarayoni</h1>
+        
+        <div class="test-layout">
+            <div class="video-section">
+                <div class="video-box">
+                    <h3>Live video</h3>
+                    <video id="localVideo" autoplay muted playsinline></video>
+                    <canvas id="videoCanvas" style="display:none;"></canvas>
+                </div>
+            </div>
+
+            <div class="questions-section">
+                <div id="userInfo" class="user-info"></div>
+                <div id="timer" class="timer-box">
+                    <span id="timeRemaining">20:00</span>
+                </div>
+                <div id="progressInfo" class="progress-info">
+                    <span id="answeredCount">0</span> / <span id="totalCount">0</span> savolga javob berildi
+                </div>
+                <div id="questionsContainer"></div>
+                <button id="finishBtn" class="btn-primary" disabled>Testni tugatish</button>
+                <p id="finishWarning" class="warning-text" style="color: #f44336; margin-top: 10px; display: none;">
+                    Testni tugatish uchun barcha savollarga javob bering!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/test.js"></script>
+</body>
+</html>
