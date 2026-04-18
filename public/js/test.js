@@ -259,12 +259,23 @@ document.getElementById('finishBtn').addEventListener('click', async () => {
     }
 });
 
-startCamera();
-loadQuestions();
-
 // Vaqt nazorati
-let timeRemaining = 20 * 60; // 20 daqiqa = 1200 soniya
+let timeRemaining = 20 * 60; // Default 20 daqiqa
 let timerInterval;
+
+// Serverdan test vaqtini olish
+async function loadTestDuration() {
+    try {
+        const response = await fetch('/api/test-duration');
+        const data = await response.json();
+        timeRemaining = data.duration * 60; // Daqiqani sekundga aylash
+        updateTimerDisplay();
+    } catch (error) {
+        console.error('Vaqt yuklashda xatolik:', error);
+        timeRemaining = 20 * 60; // Default
+        updateTimerDisplay();
+    }
+}
 
 function startTimer() {
     timerInterval = setInterval(() => {
@@ -273,10 +284,15 @@ function startTimer() {
         
         if (timeRemaining <= 0) {
             clearInterval(timerInterval);
-            autoFinishTest();
+            timeRemaining = 0;
+            updateTimerDisplay(); // So'nggi 00:00 ni ko'rsatish
+            setTimeout(autoFinishTest, 500); // 0.5 soniya kutish
         }
     }, 1000);
 }
+
+startCamera();
+loadQuestions();
 
 function updateTimerDisplay() {
     const minutes = Math.floor(timeRemaining / 60);
@@ -331,9 +347,28 @@ async function autoFinishTest() {
     }
 }
 
-// Timer ni savollar yuklangandan keyin boshlash
+// Timer ni savollar va vaqt yuklangandan keyin boshlash
+let timerStarted = false;
+
+function startTimerIfReady() {
+    if (timerStarted) return;
+    if (currentQuestions.length > 0 && timeRemaining > 0) {
+        timerStarted = true;
+        startTimer();
+    }
+}
+
 const originalLoadQuestions = loadQuestions;
 loadQuestions = async function() {
     await originalLoadQuestions();
-    startTimer();
+    startTimerIfReady();
 };
+
+const originalLoadTestDuration = loadTestDuration;
+loadTestDuration = async function() {
+    await originalLoadTestDuration();
+    startTimerIfReady();
+};
+
+// Dastlabki vaqtni yuklash
+loadTestDuration();

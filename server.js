@@ -53,6 +53,12 @@ db.serialize(() => {
     completed_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
 
+  // Test vaqti sozlamalari
+  db.run(`CREATE TABLE IF NOT EXISTS settings (
+    key TEXT PRIMARY KEY,
+    value TEXT
+  )`);
+
   db.get("SELECT * FROM admins WHERE login = ?", ['admin'], (err, row) => {
     if (!row) {
       const hash = bcrypt.hashSync('admin123', 10);
@@ -116,6 +122,38 @@ app.get('/api/questions', (req, res) => {
     }
     res.json(rows);
   });
+});
+
+// Test vaqtini olish (daqiqa)
+app.get('/api/test-duration', (req, res) => {
+  db.get("SELECT value FROM settings WHERE key = 'test_duration'", [], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    // Default 20 daqiqa
+    const duration = row ? parseInt(row.value) : 20;
+    res.json({ duration: duration });
+  });
+});
+
+// Test vaqtini saqlash (admin uchun)
+app.post('/api/test-duration', (req, res) => {
+  const { duration } = req.body;
+  
+  // Validatsiya: eng kami 1 daqiqa
+  if (!duration || duration < 1) {
+    return res.status(400).json({ error: 'Vaqt kamida 1 daqiqa bo\'lishi kerak' });
+  }
+  
+  db.run("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", 
+    ['test_duration', duration.toString()],
+    function(err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ success: true, duration: duration });
+    }
+  );
 });
 
 app.post('/api/results', (req, res) => {

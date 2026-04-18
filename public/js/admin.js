@@ -368,3 +368,51 @@ function renderTestResults() {
         `;
     }).join('');
 }
+
+// Test vaqtini saqlash
+async function saveTestDuration() {
+    const duration = parseInt(document.getElementById('testDuration').value);
+    
+    if (!duration || duration < 1) {
+        document.getElementById('durationSaveResult').textContent = '❌ Kamida 1 daqiqa!';
+        document.getElementById('durationSaveResult').style.color = 'red';
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/test-duration', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ duration: duration })
+        });
+        
+        if (response.ok) {
+            document.getElementById('durationSaveResult').textContent = '✅ Saqlandi!';
+            document.getElementById('durationSaveResult').style.color = 'green';
+            setTimeout(() => {
+                document.getElementById('durationSaveResult').textContent = '';
+            }, 3000);
+        } else {
+            const error = await response.json();
+            document.getElementById('durationSaveResult').textContent = '❌ ' + (error.error || 'Xatolik');
+            document.getElementById('durationSaveResult').style.color = 'red';
+        }
+    } catch (error) {
+        document.getElementById('durationSaveResult').textContent = '❌ Xatolik yuz berdi';
+        document.getElementById('durationSaveResult').style.color = 'red';
+    }
+}
+
+// Test vaqtini yuklash
+async function loadTestDuration() {
+    try {
+        const response = await fetch('/api/test-duration');
+        const data = await response.json();
+        document.getElementById('testDuration').value = data.duration;
+    } catch (error) {
+        console.error('Vaqt yuklashda xatolik:', error);
+    }
+}
+
+// Sahifa yuklanganda vaqtni yuklash
+window.addEventListener('load', loadTestDuration);
