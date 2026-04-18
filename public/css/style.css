@@ -94,6 +94,19 @@ body {
     border-color: #667eea;
 }
 
+/* Xatolik xabari */
+.error-msg {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    min-height: 16px;
+}
+
+.form-group input.error {
+    border-color: #e74c3c;
+}
+
 /* Telefon input stil */
 .phone-input-wrapper {
     display: flex;

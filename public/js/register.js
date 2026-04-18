@@ -44,15 +44,49 @@ function onlyLetters(input) {
 onlyLetters(document.getElementById('ism'));
 onlyLetters(document.getElementById('familiya'));
 
+function showError(inputId, errorId, message) {
+    document.getElementById(inputId).classList.add('error');
+    document.getElementById(errorId).textContent = message;
+}
+
+function clearErrors() {
+    document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+    document.querySelectorAll('input.error').forEach(el => el.classList.remove('error'));
+}
+
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const ism = document.getElementById('ism').value;
-    const familiya = document.getElementById('familiya').value;
+    // Xatoliklarni tozalash
+    clearErrors();
+    
+    const ism = document.getElementById('ism').value.trim();
+    const familiya = document.getElementById('familiya').value.trim();
     const telefonInput = document.getElementById('telefon').value;
     
-    // +998 qo'shish va bo'sh joylarni olib tashlash
-    const telefon = '+998' + telefonInput.replace(/\s/g, '');
+    let hasError = false;
+    
+    // Validatsiya
+    if (ism.length < 3) {
+        showError('ism', 'ismError', 'Ism kamida  5 ta harfdan iborat bo\'lishi kerak!');
+        hasError = true;
+    }
+    
+    if (familiya.length < 5) {
+        showError('familiya', 'familiyaError', 'Familiya kamida 8 ta harfdan iborat bo\'lishi kerak!');
+        hasError = true;
+    }
+    
+    const telefonRaqamlar = telefonInput.replace(/\s/g, '');
+    if (telefonRaqamlar.length !== 9) {
+        showError('telefon', 'telefonError', 'Telefon raqami to\'liq kiritilishi kerak (9 ta raqam)!');
+        hasError = true;
+    }
+    
+    if (hasError) return;
+    
+    // +998 qo'shish
+    const telefon = '+998' + telefonRaqamlar;
     
     try {
         const response = await fetch('/api/register', {

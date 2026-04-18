@@ -18,15 +18,18 @@
             <form id="registerForm">
                 <div class="form-group">
                     <input type="text" id="ism" name="ism" placeholder="Ismingizni kiriting" required>
+                    <span class="error-msg" id="ismError"></span>
                 </div>
                 <div class="form-group">
                     <input type="text" id="familiya" name="familiya" placeholder="Familiyangizni kiriting" required>
+                    <span class="error-msg" id="familiyaError"></span>
                 </div>
                 <div class="form-group">
                     <div class="phone-input-wrapper">
                         <span class="phone-prefix">+998</span>
                         <input type="tel" id="telefon" name="telefon" placeholder="90 123 45 67" maxlength="12" required>
                     </div>
+                    <span class="error-msg" id="telefonError"></span>
                 </div>
                 <button type="submit" class="btn-primary">Testni boshlash</button>
             </form>
