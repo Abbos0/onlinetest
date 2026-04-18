@@ -189,6 +189,27 @@ app.get('/api/results/:userId', (req, res) => {
   });
 });
 
+// Bitta natijani o'chirish
+app.delete('/api/results/:id', (req, res) => {
+  const id = req.params.id;
+  db.run("DELETE FROM results WHERE id = ?", [id], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ success: true, deleted: this.changes });
+  });
+});
+
+// Barcha natijalarni o'chirish
+app.delete('/api/results', (req, res) => {
+  db.run("DELETE FROM results", [], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ success: true, deleted: this.changes });
+  });
+});
+
 function parseQuestions(text) {
   console.log('Parse qilinmoqda...');
   console.log('Matn uzunligi:', text.length);

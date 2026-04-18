@@ -360,7 +360,10 @@ function renderTestResults() {
         
         return `
             <div class="result-card ${isNew ? 'new' : ''}">
-                <h4>${result.ism} ${result.familiya}</h4>
+                <div class="result-header">
+                    <h4>${result.ism} ${result.familiya}</h4>
+                    <button onclick="deleteResult(${index})" class="btn-delete" title="O'chirish">🗑️</button>
+                </div>
                 <p>📱 ${result.telefon}</p>
                 <div class="score">${result.score} / ${result.total}</div>
                 <p class="time">🕐 ${time}</p>
@@ -416,3 +419,62 @@ async function loadTestDuration() {
 
 // Sahifa yuklanganda vaqtni yuklash
 window.addEventListener('load', loadTestDuration);
+
+// Bitta natijani o'chirish
+async function deleteResult(index) {
+    if (!confirm("Bu natijani o'chirishni xohlaysizmi?")) {
+        return;
+    }
+    
+    const result = testResults[index];
+    // Agar natijada ID bo'lmasa, faqat lokal ro'yxatdan o'chirish
+    if (!result.id) {
+        testResults.splice(index, 1);
+        renderTestResults();
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/results/${result.id}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            testResults.splice(index, 1);
+            renderTestResults();
+        } else {
+            alert("O'chirishda xatolik yuz berdi");
+        }
+    } catch (error) {
+        console.error("Natijani o'chirishda xatolik:", error);
+        alert("O'chirishda xatolik yuz berdi");
+    }
+}
+
+// Barcha natijalarni o'chirish
+async function deleteAllResults() {
+    if (!confirm("BARCHA natijalarni o'chirishni xohlaysizmi?\n\nBu amalni qaytarib bo'lmaydi!")) {
+        return;
+    }
+    
+    if (!confirm("Rostdan ham barcha natijalarni o'chirmoqchimisiz?")) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/results', {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            testResults = [];
+            renderTestResults();
+            alert("Barcha natijalar o'chirildi");
+        } else {
+            alert("O'chirishda xatolik yuz berdi");
+        }
+    } catch (error) {
+        console.error("Natijalarni o'chirishda xatolik:", error);
+        alert("O'chirishda xatolik yuz berdi");
+    }
+}
