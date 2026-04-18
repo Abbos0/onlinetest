@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ro'yxatdan o'tish - Online Test</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Online Test Tizimi</h1>
+            <a href="/admin-login.html" class="admin-btn">Admin</a>
+        </div>
+
+        <div class="register-box">
+            <h2>Ro'yxatdan o'tish</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="ism">Ism:</label>
+                    <input type="text" id="ism" name="ism" required>
+                </div>
+                <div class="form-group">
+                    <label for="familiya">Familiya:</label>
+                    <input type="text" id="familiya" name="familiya" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefon">Telefon number:</label>
+                    <input type="tel" id="telefon" name="telefon" placeholder="+998 XX XXX XX XX" required>
+                </div>
+                <button type="submit" class="btn-primary">Testni boshlash</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/register.js"></script>
+</body>
+</html>
