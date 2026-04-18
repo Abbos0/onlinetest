@@ -17,16 +17,16 @@
             <h2>Ro'yxatdan o'tish</h2>
             <form id="registerForm">
                 <div class="form-group">
-                    <label for="ism">Ism:</label>
-                    <input type="text" id="ism" name="ism" required>
+                    <input type="text" id="ism" name="ism" placeholder="Ismingizni kiriting" required>
                 </div>
                 <div class="form-group">
-                    <label for="familiya">Familiya:</label>
-                    <input type="text" id="familiya" name="familiya" required>
+                    <input type="text" id="familiya" name="familiya" placeholder="Familiyangizni kiriting" required>
                 </div>
                 <div class="form-group">
-                    <label for="telefon">Telefon number:</label>
-                    <input type="tel" id="telefon" name="telefon" placeholder="+998 XX XXX XX XX" required>
+                    <div class="phone-input-wrapper">
+                        <span class="phone-prefix">+998</span>
+                        <input type="tel" id="telefon" name="telefon" placeholder="90 123 45 67" maxlength="12" required>
+                    </div>
                 </div>
                 <button type="submit" class="btn-primary">Testni boshlash</button>
             </form>

@@ -54,6 +54,11 @@ body {
     margin: 0 auto;
 }
 
+.register-box h2, .login-box h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
 .success-box {
     text-align: center;
     max-width: 600px;
@@ -87,6 +92,42 @@ body {
 .form-group input:focus {
     outline: none;
     border-color: #667eea;
+}
+
+/* Telefon input stil */
+.phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+}
+
+.phone-input-wrapper:focus-within {
+    border-color: #667eea;
+}
+
+.phone-prefix {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 16px;
+    border-right: 2px solid #e0e0e0;
+}
+
+.phone-input-wrapper input {
+    flex: 1;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 12px 15px !important;
+    font-size: 16px;
+}
+
+.phone-input-wrapper input:focus {
+    border: none !important;
+    outline: none !important;
 }
 
 .btn-primary {
