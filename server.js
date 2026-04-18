@@ -189,6 +189,28 @@ app.get('/api/results/:userId', (req, res) => {
   });
 });
 
+// Barcha natijalarni users bilan birga olish
+app.get('/api/all-results', (req, res) => {
+  db.all(`
+    SELECT 
+      r.id,
+      r.score,
+      r.total,
+      r.completed_at,
+      u.ism,
+      u.familiya,
+      u.telefon
+    FROM results r
+    JOIN users u ON r.user_id = u.id
+    ORDER BY r.completed_at DESC
+  `, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows);
+  });
+});
+
 // Bitta natijani o'chirish
 app.delete('/api/results/:id', (req, res) => {
   const id = req.params.id;

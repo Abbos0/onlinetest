@@ -418,7 +418,36 @@ async function loadTestDuration() {
 }
 
 // Sahifa yuklanganda vaqtni yuklash
-window.addEventListener('load', loadTestDuration);
+window.addEventListener('load', () => {
+    loadTestDuration();
+    loadSavedResults();
+});
+
+// Database'dan saqlangan natijalarni yuklash
+async function loadSavedResults() {
+    try {
+        const response = await fetch('/api/all-results');
+        const results = await response.json();
+        
+        if (results && results.length > 0) {
+            // Database formatidan lokal formatga o'tkazish
+            testResults = results.map(r => ({
+                id: r.id,
+                ism: r.ism,
+                familiya: r.familiya,
+                telefon: r.telefon,
+                score: r.score,
+                total: r.total,
+                completedAt: r.completed_at
+            }));
+            
+            renderTestResults();
+            console.log(`Sahifadan ${results.length} ta natija yuklandi`);
+        }
+    } catch (error) {
+        console.error('Natijalarni yuklashda xatolik:', error);
+    }
+}
 
 // Bitta natijani o'chirish
 async function deleteResult(index) {
